@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="shoppingCar">
+<head>
+	<meta charset="UTF-8">
+	<title>购物车</title>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.1.1/css/bootstrap.css">
+	<script type="text/javascript" src="js/angular.js"></script>
+	<style type="text/css">
+	.row {
+		margin-top: 25px;
+	}
+		.row div{
+			border:1px solid #dcdcdc;
+			line-height: 45px;
+			height: 45px;
+			overflow: hidden;
+			border-right: 0px;
+		}
+		input{
+			border: 0px;
+			outline: hidden;
+		}
+		input:focus{
+			border: 0px;
+		}
+		</style>
+</head>
+<body ng-controller="shopping">
+	<div class="row" ng-repeat="item in items">
+	  <div class="col-md-2"><span ng-bind=item.name></span></div>
+	  <div class="col-md-4"><input type="text" ng-model=item.num></div>
+	  <div class="col-md-2">${{item.price}}</div>
+	  <div class="col-md-2">$<span ng-bind=item.total></span></div>
+	  <div class="col-md-2"><button type="button" class="btn btn-danger" ng-click="del($index)">删除</button></div>
+	</div>
+	<div style="margin-top:20px;text-align: center;"><button type="button" class="btn btn-info" ng-click="showPrice()">合计:<span ng-bind=total></span>元</button></div>
+	
+</body>
+<script type="text/javascript">
+	var module = angular.module("shoppingCar",[]);
+	module.controller("shopping",["$scope",function($scope){
+		$scope.items =[
+			{"name":"方便面","num":1,'price':2.5},
+			{"name":"辣条","num":10,'price':1.5},
+			{"name":"薯片","num":11,'price':2.1}
+		];
+		$scope.items.forEach(function(self){
+			self.total = self.num*self.price;
+		})
+		$scope.total = total($scope);
+		$scope.del=function(index){
+			$scope.items.splice(index,1);
+			$scope.total = total($scope);
+		}
+		$scope.showPrice=function(){
+			alert($scope.total);
+		}
+	}])
+	function total($scope){
+		var total =0;
+		$scope.items.forEach(function(self){
+			console.log(self);
+			total += self.num*self.price;
+		})
+		return total;
+	}
+
+	console.log(module)
+</script>
+</html>
